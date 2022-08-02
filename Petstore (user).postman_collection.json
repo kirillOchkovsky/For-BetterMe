@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "01f9c3bb-7322-43b6-9989-53fa69a8280b",
+		"name": "Petstore (user)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17892118"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function makeRandomText(length) {\r",
+							"  var text = \"\";\r",
+							"  var possible = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\";\r",
+							"\r",
+							"  for (var i = 0; i < length; i++)\r",
+							"    text += possible.charAt(Math.floor(Math.random() * possible.length));\r",
+							"\r",
+							"  return text;\r",
+							"}\r",
+							"\r",
+							"pm.collectionVariables.set(\"id\", Math.floor(Math.random()*99));\r",
+							"pm.collectionVariables.set(\"userStatus\", Math.floor(Math.random()*1));\r",
+							"pm.collectionVariables.set(\"username\",  makeRandomText(10));\r",
+							"pm.collectionVariables.set(\"firstName\", makeRandomText(10));\r",
+							"pm.collectionVariables.set(\"lastName\", makeRandomText(10));\r",
+							"pm.collectionVariables.set(\"email\",  makeRandomText(7) + '@test.com');\r",
+							"pm.collectionVariables.set(\"password\", makeRandomText(12));\r",
+							"pm.collectionVariables.set(\"phone\", '+38022' + Math.floor(Math.random()*9999999));\r",
+							"\r",
+							"console.log(\"Please don't forget to delete the created user \" + pm.collectionVariables.get(\"username\") + \" after tests\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 250ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(250);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"var userid = pm.collectionVariables.get(\"id\");\r",
+							"userid = String(userid);\r",
+							"pm.test(\"Response contain user id\", () => {\r",
+							"    pm.response.to.have.jsonBody('message', userid)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{id}},\r\n    \"username\": \"{{username}}\",\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"{{phone}}\",\r\n    \"userStatus\": {{userStatus}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/v2/user",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"v2",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function makeRandomText(length){\r",
+							"  var text = \"\";\r",
+							"  var possible = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\";\r",
+							"\r",
+							"  for (var i = 0; i < length; i++)\r",
+							"    text += possible.charAt(Math.floor(Math.random() * possible.length));\r",
+							"\r",
+							"  return text; }\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"username\",  makeRandomText(10));\r",
+							"\r",
+							"const createUserReq = \r",
+							"{\r",
+							"    url: 'https://petstore.swagger.io/v2/user',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type' : 'application/json',\r",
+							"        'Postman-Token' : '411d3370-5a5f-4d2f-87f7-4fc1791518cb',\r",
+							"        'Host' : 'petstore.swagger.io'\r",
+							"    },\r",
+							"    body: JSON.stringify(\r",
+							"        {\r",
+							"    \"id\": Math.floor(Math.random()*99),\r",
+							"    \"username\": pm.collectionVariables.get(\"username\"),\r",
+							"    \"firstName\": makeRandomText(10),\r",
+							"    \"lastName\": makeRandomText(10),\r",
+							"    \"email\": makeRandomText(7) + '@test.com',\r",
+							"    \"password\": makeRandomText(12),\r",
+							"    \"phone\": '+38022' + Math.floor(Math.random()*9999999),\r",
+							"    \"userStatus\": Math.floor(Math.random()*1)\r",
+							"        })\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(createUserReq);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 250ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(250);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contain username\", () => {\r",
+							"    pm.response.to.have.jsonBody('message', pm.collectionVariables.get(\"username\"))\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/v2/user/{{username}}",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"v2",
+						"user",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userStatus",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "firstName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "phone",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "BaseURL",
+			"value": "https://petstore.swagger.io",
+			"type": "string"
+		}
+	]
+}
