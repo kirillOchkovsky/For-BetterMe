@@ -1,4 +1,4 @@
-# For-Beter-Me-
+# For-Beter-Me
 
 ## POST https://petstore.swagger.io/v2/user
 
