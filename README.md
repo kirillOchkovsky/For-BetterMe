@@ -2,12 +2,8 @@
 
 ## POST https://petstore.swagger.io/v2/user
 
-### 1. Check that correct request returns status code 200
-#### WTR
-* Send correct request with valid data
-* sdf
-#### ER
-* code 200
+1. Check that correct request returns status code 200
+
 
 ### Check that request returns correct response payload
 
