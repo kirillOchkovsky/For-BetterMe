@@ -1,1 +1,17 @@
+# Bugs in Petstore API
 
+# User
+
+## Swagger:
+
+1. No response body description
+2. No information how use authorizations token
+
+## API
+
+1. It is possibble use GET https://petstore.swagger.io/v2/user/login witout query
+2. GET https://petstore.swagger.io/v2/user/login with invalid data return 200 code and authorizations token
+3. PUT https://petstore.swagger.io/v2/user/{username} dont edit the user data but return 200 code
+4. GET https://petstore.swagger.io/v2/user/logout make no sense
+5. POST https://petstore.swagger.io/v2/user/createWithArray and POST https://petstore.swagger.io/v2/user/createWithList is same
+6. POST https://petstore.swagger.io/v2/user/createWithArray and POST https://petstore.swagger.io/v2/user/createWithList does not create multiple users (create only one)
